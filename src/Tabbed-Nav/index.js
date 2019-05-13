@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import { withRouter } from 'react-router';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import './App.css';
