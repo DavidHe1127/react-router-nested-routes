@@ -12,6 +12,8 @@ import SideBarContainer from './SideBarContainer';
 import Arrow from '../Arrow';
 import MainContainer from './MainContainer';
 
+import DocumentMain from './Document/Main';
+
 const Li = styled.li`
     &:hover {
         cursor: pointer;
@@ -33,6 +35,26 @@ const Content = styled.div`
     display: block;
     margin-left: 300px;
 `;
+
+const WorkspaceSideBar = ({ workspaceId, history }) => {
+    const to = `/workspaces/${workspaceId}/documents`;
+    const backToWorkspaceList = '/workspaces';
+    return (
+        <>
+            <div>
+                <Arrow>&#8592;</Arrow>
+                <StyledLink to={backToWorkspaceList}>
+                    Back to Workspaces
+                </StyledLink>
+            </div>
+            <Li>
+                <StyledLink to={to}>Documents</StyledLink>
+            </Li>
+            <Li>Settlements</Li>
+            <Li>Participants</Li>
+        </>
+    );
+};
 
 const ListWorkspaces = ({ history, ...rest }) => {
     const style = {
@@ -100,9 +122,6 @@ const WorkspaceMain = props => {
     return (
         <>
             <div style={style}>
-                <div style={{ textAlign: 'left' }}>
-                    <Arrow onClick={goBack}>&#8592;</Arrow>
-                </div>
                 <div style={{ textAlign: 'center' }}>
                     <h2>Workspace#{id} Summary</h2>
                 </div>
@@ -112,18 +131,7 @@ const WorkspaceMain = props => {
 };
 
 const workspace = {
-    SideBar: ({ workspaceId }) => {
-        const to = `/workspaces/${workspaceId}/documents`;
-        return (
-            <>
-                <Li>
-                    <StyledLink to={to}>Documents</StyledLink>
-                </Li>
-                <Li>Settlements</Li>
-                <Li>Participants</Li>
-            </>
-        );
-    },
+    SideBar: WorkspaceSideBar,
     Main: WorkspaceMain,
 };
 
@@ -132,12 +140,16 @@ const Workspace = props => {
         match: {
             params: { id: workspaceId },
         },
+        history,
     } = props;
 
     return (
         <>
             <SideBarContainer>
-                <workspace.SideBar workspaceId={workspaceId} />
+                <workspace.SideBar
+                    history={history}
+                    workspaceId={workspaceId}
+                />
             </SideBarContainer>
             <MainContainer>
                 <workspace.Main {...props} />
@@ -147,30 +159,24 @@ const Workspace = props => {
 };
 
 const documents = {
-    SideBar: ({ workspaceId }) => {
-        const to = `/workspaces/${workspaceId}/documents`;
-
-        return (
-            <>
-                <Li>
-                    <StyledLink to={to}>Documents</StyledLink>
-                </Li>
-                <Li>Settlements</Li>
-                <Li>Participants</Li>
-            </>
-        );
-    },
+    SideBar: WorkspaceSideBar,
     Main: ({ workspaceId }) => {
-        const to = `/workspaces/${workspaceId}/documents/1`;
+        const to1 = `/workspaces/${workspaceId}/documents/1`;
+        const to2 = `/workspaces/${workspaceId}/documents/2`;
+        const to3 = `/workspaces/${workspaceId}/documents/3`;
 
         return (
             <div>
                 <h4>Documents List</h4>
                 <Li>
-                    <StyledLink to={to}>Doc 1</StyledLink>
+                    <StyledLink to={to1}>Doc 1</StyledLink>
                 </Li>
-                <Li>Doc 2</Li>
-                <Li>Doc 3</Li>
+                <Li>
+                    <StyledLink to={to2}>Doc 2</StyledLink>
+                </Li>
+                <Li>
+                    <StyledLink to={to3}>Doc 3</StyledLink>
+                </Li>
             </div>
         );
     },
@@ -181,12 +187,16 @@ const Documents = props => {
         match: {
             params: { id: workspaceId },
         },
+        history,
     } = props;
 
     return (
         <>
             <SideBarContainer>
-                <documents.SideBar workspaceId={workspaceId} />
+                <documents.SideBar
+                    history={history}
+                    workspaceId={workspaceId}
+                />
             </SideBarContainer>
             <MainContainer>
                 <documents.Main workspaceId={workspaceId} />
@@ -196,22 +206,9 @@ const Documents = props => {
 };
 
 const document = {
-    SideBar: ({ workspaceId }) => {
-        const to = `/workspaces/${workspaceId}/documents`;
-
-        return (
-            <>
-                <Li>
-                    <StyledLink to={to}>Documents</StyledLink>
-                </Li>
-                <Li>Settlements</Li>
-                <Li>Participants</Li>
-            </>
-        );
-    },
-    Main: () => (
+    Main: ({ documentId }) => (
         <div>
-            <div>Document#1 Summary</div>
+            <div>Document#{documentId} Summary</div>
         </div>
     ),
 };
@@ -221,15 +218,16 @@ const Document = props => {
         match: {
             params: { id: workspaceId, documentId },
         },
+        history,
     } = props;
 
     return (
         <>
             <SideBarContainer>
-                <document.SideBar workspaceId={workspaceId} />
+                <WorkspaceSideBar history={history} workspaceId={workspaceId} />
             </SideBarContainer>
             <MainContainer>
-                <document.Main />
+                <DocumentMain documentId={documentId} />
             </MainContainer>
         </>
     );
