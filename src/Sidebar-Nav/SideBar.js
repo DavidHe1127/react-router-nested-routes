@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import Arrow from '../Arrow';
 
 const StyledLink = styled(Link)`
   &:hover {
@@ -19,16 +20,23 @@ const Li = styled.li`
   margin: 16px;
 `;
 
-const SideBar = ({ workspaceId }) => {
-  const to = `/workspaces/${workspaceId}/documents`;
-
+const SideBar = ({ workspaceId, history }) => {
+  const toDocuments = `/workspaces/${workspaceId}/documents`;
+  const toParticipants = `/workspaces/${workspaceId}/participants`;
+  const backToWorkspaceList = '/workspaces';
   return (
     <>
+      <div>
+        <Arrow>&#8592;</Arrow>
+        <StyledLink to={backToWorkspaceList}>Back to Workspaces</StyledLink>
+      </div>
       <Li>
-        <StyledLink to={to}>Documents</StyledLink>
+        <StyledLink to={toDocuments}>Documents</StyledLink>
       </Li>
       <Li>Settlements</Li>
-      <Li>Participants</Li>
+      <Li>
+        <StyledLink to={toParticipants}>Participants</StyledLink>
+      </Li>
     </>
   );
 };

@@ -9,10 +9,14 @@ import {
 } from 'react-router-dom';
 
 import SideBarContainer from './SideBarContainer';
-import Arrow from '../Arrow';
 import MainContainer from './MainContainer';
 
-import DocumentMain from './Document/Main';
+import Document from './Document/Summary';
+import Documents from './Document/List';
+import Participants from './Participants/Summary';
+
+import SideBar from './SideBar';
+
 
 const Li = styled.li`
     &:hover {
@@ -22,39 +26,10 @@ const Li = styled.li`
     margin: 16px;
 `;
 
-const StyledLink = styled(Link)`
-    &:hover {
-        cursor: pointer;
-        color: maroon;
-    }
-    color: black;
-    text-decoration: none;
-`;
-
 const Content = styled.div`
     display: block;
     margin-left: 300px;
 `;
-
-const WorkspaceSideBar = ({ workspaceId, history }) => {
-    const to = `/workspaces/${workspaceId}/documents`;
-    const backToWorkspaceList = '/workspaces';
-    return (
-        <>
-            <div>
-                <Arrow>&#8592;</Arrow>
-                <StyledLink to={backToWorkspaceList}>
-                    Back to Workspaces
-                </StyledLink>
-            </div>
-            <Li>
-                <StyledLink to={to}>Documents</StyledLink>
-            </Li>
-            <Li>Settlements</Li>
-            <Li>Participants</Li>
-        </>
-    );
-};
 
 const ListWorkspaces = ({ history, ...rest }) => {
     const style = {
@@ -131,7 +106,7 @@ const WorkspaceMain = props => {
 };
 
 const workspace = {
-    SideBar: WorkspaceSideBar,
+    SideBar: SideBar,
     Main: WorkspaceMain,
 };
 
@@ -158,81 +133,6 @@ const Workspace = props => {
     );
 };
 
-const documents = {
-    SideBar: WorkspaceSideBar,
-    Main: ({ workspaceId }) => {
-        const to1 = `/workspaces/${workspaceId}/documents/1`;
-        const to2 = `/workspaces/${workspaceId}/documents/2`;
-        const to3 = `/workspaces/${workspaceId}/documents/3`;
-
-        return (
-            <div>
-                <h4>Documents List</h4>
-                <Li>
-                    <StyledLink to={to1}>Doc 1</StyledLink>
-                </Li>
-                <Li>
-                    <StyledLink to={to2}>Doc 2</StyledLink>
-                </Li>
-                <Li>
-                    <StyledLink to={to3}>Doc 3</StyledLink>
-                </Li>
-            </div>
-        );
-    },
-};
-
-const Documents = props => {
-    const {
-        match: {
-            params: { id: workspaceId },
-        },
-        history,
-    } = props;
-
-    return (
-        <>
-            <SideBarContainer>
-                <documents.SideBar
-                    history={history}
-                    workspaceId={workspaceId}
-                />
-            </SideBarContainer>
-            <MainContainer>
-                <documents.Main workspaceId={workspaceId} />
-            </MainContainer>
-        </>
-    );
-};
-
-const document = {
-    Main: ({ documentId }) => (
-        <div>
-            <div>Document#{documentId} Summary</div>
-        </div>
-    ),
-};
-
-const Document = props => {
-    const {
-        match: {
-            params: { id: workspaceId, documentId },
-        },
-        history,
-    } = props;
-
-    return (
-        <>
-            <SideBarContainer>
-                <WorkspaceSideBar history={history} workspaceId={workspaceId} />
-            </SideBarContainer>
-            <MainContainer>
-                <DocumentMain documentId={documentId} />
-            </MainContainer>
-        </>
-    );
-};
-
 function App() {
     return (
         <div className="App">
@@ -253,6 +153,11 @@ function App() {
                         exact
                         path="/workspaces/:id/documents/:documentId"
                         component={Document}
+                    />
+                    <Route
+                        exact
+                        path="/workspaces/:id/participants"
+                        component={Participants}
                     />
                     <Route
                         path="/"
