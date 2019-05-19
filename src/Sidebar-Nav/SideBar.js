@@ -24,11 +24,17 @@ const SideBar = ({ workspaceId, history }) => {
   const toDocuments = `/workspaces/${workspaceId}/documents`;
   const toParticipants = `/workspaces/${workspaceId}/participants`;
   const backToWorkspaceList = '/workspaces';
+  const backToWorkspaceSummary = `/workspaces/${workspaceId}`;
+
   return (
     <>
       <div>
         <Arrow>&#8592;</Arrow>
-        <StyledLink to={backToWorkspaceList}>Back to Workspaces</StyledLink>
+        <StyledLink to={backToWorkspaceList}>Workspaces List</StyledLink>
+      </div>
+      <div>
+        <Arrow>&#8592;</Arrow>
+        <StyledLink to={backToWorkspaceSummary}>Workspace Summary</StyledLink>
       </div>
       <Li>
         <StyledLink to={toDocuments}>Documents</StyledLink>
